@@ -17,21 +17,23 @@ block main
               th Trạng Thái
               th Hành Động
           tbody
-            tr
-              td 1
-              td: img.img-thumbnail(src="https://via.placeholder.com/50" alt="Sản phẩm")
-              td Áo Thun Nam
-              td 250,000 VND
-              td: span.badge.bg-success Hoạt động
-              td
-               button(class="btn btn-warning btn-sm") Sửa
-               button(class="btn btn-danger btn-sm ml-1") Xóa  
-            tr
-              td 2
-              td: img.img-thumbnail(src="https://via.placeholder.com/50" alt="Sản phẩm")
-              td Giày Thể Thao
-              td 750,000 VND
-              td: span.badge.bg-danger Dừng hoạt động
-              td
-                button(class="btn btn-warning btn-sm") Sửa
-                button(class="btn btn-danger btn-sm ml-1") Xóa  
+            each item, index in products
+              tr
+                td #{index + 1}
+                td: img.img-thumbnail(
+                  src= item.thumbnail 
+                  alt= item.title
+                  width="100px"
+                  height="auto"
+                  )
+                td #{item.title}
+                td #{item.price}$
+                td
+                  if (item.status === 'active')
+                    span.badge.bg-success Hoạt động
+                  else
+                    span.badge.bg-danger Dừng hoạt động
+                td
+                  button(class="btn btn-warning btn-sm") Sửa
+                  button(class="btn btn-danger btn-sm ml-1") Xóa  
+
