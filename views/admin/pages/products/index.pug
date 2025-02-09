@@ -1,0 +1,37 @@
+extends ../../layouts/default.pug
+
+block main
+    h3 Quản Lý Sản Phẩm
+
+    // Container
+    .container.mt-4
+      // Bảng sản phẩm
+      .table-responsive
+        table.table.table-bordered.table-hover.text-center
+          thead.table-dark
+            tr
+              th ID
+              th Ảnh
+              th Tên Sản Phẩm
+              th Giá
+              th Trạng Thái
+              th Hành Động
+          tbody
+            tr
+              td 1
+              td: img.img-thumbnail(src="https://via.placeholder.com/50" alt="Sản phẩm")
+              td Áo Thun Nam
+              td 250,000 VND
+              td: span.badge.bg-success Hoạt động
+              td
+               button(class="btn btn-warning btn-sm") Sửa
+               button(class="btn btn-danger btn-sm ml-1") Xóa  
+            tr
+              td 2
+              td: img.img-thumbnail(src="https://via.placeholder.com/50" alt="Sản phẩm")
+              td Giày Thể Thao
+              td 750,000 VND
+              td: span.badge.bg-danger Dừng hoạt động
+              td
+                button(class="btn btn-warning btn-sm") Sửa
+                button(class="btn btn-danger btn-sm ml-1") Xóa  
