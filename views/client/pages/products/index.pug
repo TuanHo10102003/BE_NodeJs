@@ -8,12 +8,13 @@ block main
                 +box-head("Danh sách sản phẩm")
 
         .row 
-            .col-4.mb-3 
-                .product-item 
-                    .inner-image 
-                        img(src="https://cdn.dummyjson.com/products/images/beauty/Essence%20Mascara%20Lash%20Princess/thumbnail.png", alt="Essence Mascara Lash Princess")
-                    .inner-content 
-                        h3.inner-title Essence Mascara Lash Princess   
-                         .inner-price-new 9.99
-                         .inner-price-old 7.17
-                         .inner-rating 4.94
+            each item in products
+                .col-4.mb-3 
+                    .product-item 
+                        .inner-image 
+                            img(src= item.thumbnail, alt=item.title)
+                        .inner-content 
+                            h3.inner-title #{item.title}   
+                            .inner-price-new #{item.priceNew}$
+                            .inner-price-old #{item.price}$
+                            .inner-rating #{item.discountPercentage}%
