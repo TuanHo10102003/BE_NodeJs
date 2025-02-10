@@ -2,11 +2,15 @@ extends ../../layouts/default.pug
 
 block main
     h3 Quản Lý Sản Phẩm
+    .card.mb-3 
+      .card-header Bộ lọc và Tìm kiếm
+      .card-body 
+        each item in filterStatus
+          button(class =`btn btn-sm ml-1 btn-outline-success ${item.class}` button-status=item.status) #{item.name}
 
-    // Container
-    .container.mt-4
-      // Bảng sản phẩm
-      .table-responsive
+    .card.mb-3 
+      .card-header Danh sách sản phẩm
+      .card-body 
         table.table.table-bordered.table-hover.text-center
           thead.table-dark
             tr
