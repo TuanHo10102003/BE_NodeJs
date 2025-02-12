@@ -41,12 +41,26 @@ block main
                 td #{item.price}$
                 td
                   if (item.status === 'active')
-                    span.badge.bg-success Hoạt động
+                    button(class="badge bg-success" 
+                      button-change-status
+                      data-status = item.status
+                      data-id = item.id) Hoạt động
                   else
-                    span.badge.bg-danger Dừng hoạt động
+                     button(class="badge bg-danger" 
+                      class="badge bg-danger" 
+                      button-change-status
+                      data-status = item.status
+                      data-id = item.id) Dừng hoạt động
                 td
                   button(class="btn btn-warning btn-sm") Sửa
                   button(class="btn btn-danger btn-sm ml-1") Xóa  
     nav.d-flex.justify-content-end
       +pagination(pagination)
+  
     
+    form(action="",
+     method="POST",
+     id="form-change-status",
+     data-path=`${prefixAdmin}/products/change-status`) 
+
+    script(src="/admin/js/product.js") 
