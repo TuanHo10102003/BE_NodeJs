@@ -2,6 +2,8 @@ const express = require('express');
 
 const methodOverride = require("method-override")
 
+const bodyParser = require("body-parser")
+
 require('dotenv').config()
 
 const database = require("./config/database");
@@ -19,6 +21,8 @@ const port = process.env.PORT;
 
 
 app.locals.prefixAdmin = systemConfig.prefixAdmin;
+
+app.use(bodyParser.urlencoded({ extended: false}));
 
 app.use(methodOverride("_method"));
 app.use(express.static("public"));
