@@ -1,100 +1,111 @@
-const Product = require("../../models/product.model")
+const Product = require("../../models/product.model");
 
-const filterStatusHelper = require("../../helpers/filterStatus")
+const filterStatusHelper = require("../../helpers/filterStatus");
 
-const searchHelper = require("../../helpers/search")
+const searchHelper = require("../../helpers/search");
 
-const paginationHelper = require("../../helpers/pagination")
+const paginationHelper = require("../../helpers/pagination");
 //[GET] /admin/products
 module.exports.index = async (req, res) => {
+  let find = {
+    deleted: false,
+  };
 
-    let find = {
-        deleted: false,
-    }
+  //filterStatus
+  const filterStatus = filterStatusHelper(req.query);
 
-    //filterStatus
-    const filterStatus = filterStatusHelper(req.query);
+  if (req.query.status) {
+    find.status = req.query.status;
+  }
+  //search
+  const objectSearch = searchHelper(req.query);
 
-    if(req.query.status){
-        find.status = req.query.status;
-    }
-    //search
-    const objectSearch = searchHelper(req.query);
+  if (objectSearch.regex) {
+    find.title = objectSearch.regex;
+  }
+  // Pageination
 
-    if(objectSearch.regex){
-        find.title = objectSearch.regex
-    }
-    // Pageination
+  const countProducts = await Product.countDocuments(find);
 
-    const countProducts = await Product.countDocuments(find);
-
-    let objectPagination = paginationHelper(
+  let objectPagination = paginationHelper(
     {
-        limitItem: 5,
-        currentPage: 1
+      limitItem: 5,
+      currentPage: 1,
     },
     req.query,
     countProducts
-)
-    const products = await Product.find(find).limit(objectPagination.limitItem).skip(objectPagination.skip);
+  );
+  const products = await Product.find(find)
+    .sort({position: "asc"})
+    .limit(objectPagination.limitItem)
+    .skip(objectPagination.skip);
 
-    res.render("admin/pages/products/index", {
-        pageTitle: "Danh sách sản phẩm",
-        products: products,
-        filterStatus: filterStatus,
-        keyword: objectSearch.keyword,
-        pagination: objectPagination
-    });
+  res.render("admin/pages/products/index", {
+    pageTitle: "Danh sách sản phẩm",
+    products: products,
+    filterStatus: filterStatus,
+    keyword: objectSearch.keyword,
+    pagination: objectPagination,
+  });
 };
 
 //[PATCH] /admin/products/change-status/:status/:id
 
 module.exports.changeStatus = async (req, res) => {
-    const status = req.params.status
-    const id = req.params.id
+  const status = req.params.status;
+  const id = req.params.id;
 
-    await Product.updateOne({_id: id}, {status: status})
+  await Product.updateOne({ _id: id }, { status: status });
 
-    res.redirect(`back`)
-} 
+  res.redirect(`back`);
+};
 
 //[PATCH] /admin/products/change-multi
 
 module.exports.changeMulti = async (req, res) => {
-    const type = req.body.type;
-    const ids = req.body.ids.split(", ")
+  const type = req.body.type;
+  const ids = req.body.ids.split(", ");
 
-    switch(type){
-        case "active":
-            await Product.updateMany({ _id: { $in: ids}}, {status: "active"})
-            break;
-           
-        case "inactive":
-            await Product.updateMany({ _id: { $in: ids}}, {status: "inactive"})
-            break;
-        case "delete-all":
-            await Product.updateMany({_id: { $in: ids}},
-                {
-                    deleted: true,
-                    deletedAt: new Date()
-                })   
-            break;
-        default:
-            break;
-    }
-    res.redirect("back")
-}
+  switch (type) {
+    case "active":
+      await Product.updateMany({ _id: { $in: ids } }, { status: "active" });
+      break;
 
+    case "inactive":
+      await Product.updateMany({ _id: { $in: ids } }, { status: "inactive" });
+      break;
+    case "delete-all":
+      await Product.updateMany(
+        { _id: { $in: ids } },
+        {
+          deleted: true,
+          deletedAt: new Date(),
+        }
+      );
+      break;
+    case "change-position":
+      for (const item of ids) {
+        let [id, position] = item.split("-");
+        position = parseInt(position);
+        await Product.updateOne({ _id: id }, { position: position });
+      }
+      break;
+    default:
+      break;
+  }
+  res.redirect("back");
+};
 
 //[DELETE] /admin/products/delete/:id
 
 module.exports.deleteItem = async (req, res) => {
-    const id = req.params.id;
+  const id = req.params.id;
 
-    await Product.updateOne({_id: id},
-         {deleted: true},
-         {deletedAt: new Date()}
-        )
+  await Product.updateOne(
+    { _id: id },
+    { deleted: true },
+    { deletedAt: new Date() }
+  );
 
-    res.redirect("back")
-}
+  res.redirect("back");
+};

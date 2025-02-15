@@ -100,21 +100,30 @@ if (formChangeMulti) {
 
     const typeChange = e.target.elements.type.value;
 
-    if(typeChange == "delete-all"){
-      const isConfirm = confirm("Bạn có chắc muốn xóa những sản phẩm này")
-      if(!isConfirm){
+    if (typeChange == "delete-all") {
+      const isConfirm = confirm("Bạn có chắc muốn xóa những sản phẩm này");
+      if (!isConfirm) {
         return;
       }
-    } 
+    }
 
     if (inputsChecked.length > 0) {
       let ids = [];
 
       const inputIds = formChangeMulti.querySelector("input[name='ids']");
-      inputsChecked.forEach(input => {
+      inputsChecked.forEach((input) => {
         const id = input.value;
-        ids.push(id);
+
+        if (typeChange == "change-position") {
+          const position = input
+            .closest("tr")
+            .querySelector("input[name='position']").value;
+          ids.push(`${id}-${position}`)
+        } else {
+          ids.push(id);
+        }
       });
+
       inputIds.value = ids.join(", ");
       formChangeMulti.submit();
     } else {
@@ -125,24 +134,22 @@ if (formChangeMulti) {
 
 //Delete Item
 
-const buttonDelete = document.querySelectorAll("[button-delete]")
-if(buttonDelete.length > 0){
-  const formDeleteItem = document.querySelector("#form-delete-item")
-  const path = formDeleteItem.getAttribute("data-path")
-  buttonDelete.forEach(button =>{
-    button.addEventListener("click", () =>{
-      const isConfirm = confirm("bạn có chắc muốn xóa sản phẩm này không?")
+const buttonDelete = document.querySelectorAll("[button-delete]");
+if (buttonDelete.length > 0) {
+  const formDeleteItem = document.querySelector("#form-delete-item");
+  const path = formDeleteItem.getAttribute("data-path");
+  buttonDelete.forEach((button) => {
+    button.addEventListener("click", () => {
+      const isConfirm = confirm("bạn có chắc muốn xóa sản phẩm này không?");
 
-      if(isConfirm == true){
-        const id = button.getAttribute("data-id")
+      if (isConfirm == true) {
+        const id = button.getAttribute("data-id");
 
-        const action = `${path}/${id}?_method=DELETE`
+        const action = `${path}/${id}?_method=DELETE`;
 
         formDeleteItem.action = action;
-        formDeleteItem.submit()
+        formDeleteItem.submit();
       }
-    })
-  })
+    });
+  });
 }
-
-

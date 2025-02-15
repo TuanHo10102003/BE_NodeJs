@@ -33,6 +33,7 @@ block main
               th Ảnh
               th Tên Sản Phẩm
               th Giá
+              th Vị trí
               th Trạng Thái
               th Hành Động
           tbody
@@ -53,6 +54,12 @@ block main
                   )
                 td #{item.title}
                 td #{item.price}$
+                td 
+                  input(type="number"
+                    value=item.position
+                    style="width: 60px"
+                    min="1"
+                    name="position")
                 td
                   if (item.status === 'active')
                     button(class="badge bg-success" 
