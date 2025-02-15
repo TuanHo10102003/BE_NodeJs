@@ -3,10 +3,13 @@ include ../../mixins/filterStatus.pug
 include ../../mixins/search.pug
 include ../../mixins/pagination.pug
 include ../../mixins/form-change-multi.pug
+include ../../mixins/alert.pug
 
 
 
 block main
+    +alert-success("5000")
+ 
     h3 Quản Lý Sản Phẩm
     .card.mb-3 
       .card-header Bộ lọc và Tìm kiếm
@@ -92,4 +95,7 @@ block main
      method="POST",
      id="form-delete-item",
      data-path=`${prefixAdmin}/products/delete`) 
+
+
+    link(rel="stylesheet", href="/css/style.css")
     script(src="/admin/js/product.js") 

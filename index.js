@@ -4,6 +4,12 @@ const methodOverride = require("method-override")
 
 const bodyParser = require("body-parser")
 
+const flash = require("express-flash")
+
+const cookieParser = require("cookie-parser")
+
+const session = require("express-session")
+
 require('dotenv').config()
 
 const database = require("./config/database");
@@ -19,6 +25,9 @@ const app = express();
 
 const port = process.env.PORT;
 
+app.use(cookieParser('TUAN10102003'));
+app.use(session({cookie: {maxAge: 60000}}))
+app.use(flash());
 
 app.locals.prefixAdmin = systemConfig.prefixAdmin;
 
