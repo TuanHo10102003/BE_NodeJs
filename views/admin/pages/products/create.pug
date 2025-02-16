@@ -1,0 +1,103 @@
+extends ../../layouts/default.pug
+
+block main 
+    h1(class="mb-4") Thêm mới sản phẩm 
+    
+    form(
+        action = `${prefixAdmin}/products/create`
+        id="form-create-product"
+        method ="POST"
+    )
+
+        div(class="form-group")
+            lable(for="title") Tiêu đề
+            input(
+                type="text"
+                class="form-control"
+                id="title"
+                name="title"
+                required 
+            )
+        div(class="form-group")
+            lable(for="desc") Mô tả
+            input(
+                type="text"
+                class="form-control"
+                id="desc"
+                name="description"
+                row="5" 
+            )
+        div(class="form-group")
+            lable(for="price") Giá
+            input(
+                type="number"
+                class="form-control"
+                id="price"
+                name="price"
+                value="0"
+                min ="0" 
+            )
+        div(class="form-group")
+            lable(for="discount") % Giảm giá
+            input(
+                type="number"
+                class="form-control"
+                id="discount"
+                name="discountPercentage"
+                value="0"
+                min ="0" 
+            )
+        div(class="form-group")
+            lable(for="stock") Số lượng
+            input(
+                type="number"
+                class="form-control"
+                id="stock"
+                name="stock"
+                value="0"
+                min ="0" 
+            )
+        div(class="form-group")
+            lable(for="thumbnail") Ảnh
+            input(
+                type="text"
+                class="form-control"
+                id="thumbnail"
+                name="thumbnail"
+            )
+        div(class="form-group")
+            lable(for="position") Vị trí
+            input(
+                type="number"
+                class="form-control"
+                id="position"
+                name="position"
+                placeholder ="Tự động tăng"
+                min="1"
+            )
+        div(class="form-group form-check form-check-inline")
+            input(
+                type="radio"
+                class="form-check-input"
+                id="statusActive"
+                name="status"
+                value ="active"
+                checked
+            )
+            lable(for="statusActive" class="form-check-lable") Hoạt Động
+        div(class="form-group form-check form-check-inline")
+            input(
+                type="radio"
+                class="form-check-input"
+                id="statusInactive"
+                name="status"
+                value ="inactive"
+                checked
+            )
+            lable(for="statusActive" class="form-check-lable") Dừng hoạt Động
+        div(class="form-group")
+            button(type="submit"
+                class="btn btn-primary") Tạo mới 
+
+    link(rel="stylesheet", href="/css/style.css")
+    script(src="/admin/js/product.js") 
