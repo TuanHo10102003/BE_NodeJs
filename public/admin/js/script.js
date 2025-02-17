@@ -1,6 +1,5 @@
 //Button Status
 const buttonStatus = document.querySelectorAll("[button-status]");
-
 if (buttonStatus.length > 0) {
   let url = new URL(window.location.href);
   buttonStatus.forEach((button) => {
@@ -18,7 +17,6 @@ if (buttonStatus.length > 0) {
 
 //Form Search
 const formSearch = document.querySelector("#form-search");
-
 if (formSearch) {
   let url = new URL(window.location.href);
   formSearch.addEventListener("submit", (e) => {
@@ -34,9 +32,7 @@ if (formSearch) {
 }
 
 //Pagination
-
 const buttonPagination = document.querySelectorAll("[button-pagination]");
-
 if (buttonPagination) {
   let url = new URL(window.location.href);
   buttonPagination.forEach((button) => {
@@ -53,9 +49,7 @@ if (buttonPagination) {
 }
 
 //CheckBox Multi
-
 const checkboxMulti = document.querySelector("[checkbox-multi]");
-
 if (checkboxMulti) {
   const inputCheckAll = checkboxMulti.querySelector("input[name='checkall']");
   const inputIds = checkboxMulti.querySelectorAll("input[name='id']");
@@ -85,10 +79,9 @@ if (checkboxMulti) {
     });
   });
 }
+
 // Form Change Multi
-
 const formChangeMulti = document.querySelector("[form-change-multi]");
-
 if (formChangeMulti) {
   formChangeMulti.addEventListener("submit", (e) => {
     e.preventDefault();
@@ -118,7 +111,7 @@ if (formChangeMulti) {
           const position = input
             .closest("tr")
             .querySelector("input[name='position']").value;
-          ids.push(`${id}-${position}`)
+          ids.push(`${id}-${position}`);
         } else {
           ids.push(id);
         }
@@ -133,7 +126,6 @@ if (formChangeMulti) {
 }
 
 //Delete Item
-
 const buttonDelete = document.querySelectorAll("[button-delete]");
 if (buttonDelete.length > 0) {
   const formDeleteItem = document.querySelector("#form-delete-item");
@@ -155,17 +147,42 @@ if (buttonDelete.length > 0) {
 }
 
 // Show Alert
-const showAlert = document.querySelector("[show-alert]")
-if(showAlert){
-  const time = parseInt(showAlert.getAttribute("data-time"))
-  const closeAlert = showAlert.querySelector("[close-alert]")
+const showAlert = document.querySelector("[show-alert]");
+if (showAlert) {
+  const time = parseInt(showAlert.getAttribute("data-time"));
+  const closeAlert = showAlert.querySelector("[close-alert]");
 
-  setTimeout(() =>{
-    showAlert.classList.add("alert-hidden")
-  }, time )
+  setTimeout(() => {
+    showAlert.classList.add("alert-hidden");
+  }, time);
 
-  closeAlert.addEventListener("click", ()=>{
-    showAlert.classList.add("alert-hidden")
-  })
+  closeAlert.addEventListener("click", () => {
+    showAlert.classList.add("alert-hidden");
+  });
+}
+
+//Preview Image
+const uploadImage = document.querySelector("[upload-image]");
+
+if (uploadImage) {
+  const uploadImageInput = document.querySelector("[upload-image-input]");
+  const uploadImagePreview = document.querySelector("[upload-image-preview]");
+  const buttonCancelImage = document.querySelector("[button-cancel-image]");
+
+  uploadImageInput.addEventListener("change", (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      uploadImagePreview.src = URL.createObjectURL(file);
+      uploadImagePreview.style.display = "block"; 
+      buttonCancelImage.classList.remove("d-none"); 
+    }
+  });
+
+  buttonCancelImage.addEventListener("click", () => {
+    uploadImagePreview.src = "";
+    uploadImagePreview.style.display = "none";
+    uploadImageInput.value = ""; 
+    buttonCancelImage.classList.add("d-none");
+  });
 }
 

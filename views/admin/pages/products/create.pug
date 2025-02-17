@@ -7,6 +7,7 @@ block main
         action = `${prefixAdmin}/products/create`
         id="form-create-product"
         method ="POST"
+        enctype="multipart/form-data"
     )
 
         div(class="form-group")
@@ -57,14 +58,20 @@ block main
                 value="0"
                 min ="0" 
             )
-        div(class="form-group")
-            lable(for="thumbnail") Ảnh
+        div(class="form-group" upload-image)
+            lable(for="thumbnail") Ảnh 
+            <br>
             input(
-                type="text"
-                class="form-control"
+                type="file"
+                class="form-control-file"
                 id="thumbnail"
                 name="thumbnail"
+                accept="image/*"
+                upload-image-input
             )
+            img(src="" upload-image-preview 
+                class="image-preview")
+            button(button-cancel-image class="d-none") X
         div(class="form-group")
             lable(for="position") Vị trí
             input(
