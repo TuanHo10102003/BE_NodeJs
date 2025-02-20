@@ -80,8 +80,14 @@ block main
                       button-change-status
                       data-status = item.status
                       data-id = item.id) Dừng hoạt động
+                td  
+                  a(
+                    href=`${prefixAdmin}/products/detail/${item.id}`
+                    class="btn btn-info btn-sm-1"
+                  ) Chi tiết
                 td
-                  a(href=`${prefixAdmin}/products/edit/${item.id}` class="btn btn-warning btn-sm") Sửa
+                  a(href=`${prefixAdmin}/products/edit/${item.id}` class="btn btn-warning btn-sm-1") Sửa
+                td 
                   button(
                     class="btn btn-danger btn-sm ml-1"
                     button-delete
