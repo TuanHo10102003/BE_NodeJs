@@ -173,16 +173,33 @@ if (uploadImage) {
     const file = e.target.files[0];
     if (file) {
       uploadImagePreview.src = URL.createObjectURL(file);
-      uploadImagePreview.style.display = "block"; 
-      buttonCancelImage.classList.remove("d-none"); 
+      uploadImagePreview.style.display = "block";
+      buttonCancelImage.classList.remove("d-none");
     }
   });
 
   buttonCancelImage.addEventListener("click", () => {
     uploadImagePreview.src = "";
     uploadImagePreview.style.display = "none";
-    uploadImageInput.value = ""; 
+    uploadImageInput.value = "";
     buttonCancelImage.classList.add("d-none");
   });
 }
 
+//Sort
+
+const sort = document.querySelector("[sort]");
+if (sort) {
+  let url = new URL(window.location.href)
+  const sortSelect = sort.querySelector("[sort-select]");
+  const sortClear = sort.querySelector("[sort-clear]");
+
+  sortSelect.addEventListener("change", (e) => {
+    const value = e.target.value;
+    const [sortKey, sortValue] = value.split("-");
+
+    url.searchParams.set("sortKey", sortKey)
+    url.searchParams.set("sortValue", sortValue)
+    window.location.href = url.href;
+  });
+}
