@@ -33,7 +33,7 @@ block main
         h1(class="mb-4") Vị trí: <b>#{product.position}</b>
 
     if(product.description)
-        h1(class="mb-4") #{product.description}
+        h1(class="mb-4") Mô tả: !{product.description}
 
     td
         a(href=`${prefixAdmin}/products/edit/${product.id}` class="btn btn-warning btn-sm-1") Chỉnh sửa
