@@ -1,0 +1,96 @@
+extends ../../layouts/default.pug
+include ../../mixins/alert.pug
+block main 
+    +alert-success(5000)
+    +alert-error(5000)
+
+    h1(class="mb-4") Cập nhật danh mục
+    form(
+        action = `${prefixAdmin}/products-category/edit/${records.id}?_method=PATCH`
+        id="form-edit-product-category"
+        method ="POST"
+        enctype="multipart/form-data"
+    )
+
+        div(class="form-group")
+            lable(for="title") Tiêu đề
+            input(
+                type="text"
+                class="form-control"
+                id="title"
+                name="title"
+                required
+                value = records.title
+            )
+        div(class="form-group")
+            lable(for="parent_id") Danh mục cha
+            input(
+                type="text"
+                class="form-control"
+                id="parent_id"
+                name="parent_id"
+                value = records.parent_id
+            )
+        div(class="form-group")
+            label(for="desc") Mô tả
+            textarea(
+                class="form-control"
+                id="desc"
+                name="description"
+                rows="5"
+                value = records.description
+            ) #{records.description}
+        div(class="form-group" upload-image)
+            lable(for="thumbnail") Ảnh 
+            <br>
+            input(
+                type="file"
+                class="form-control-file"
+                id="thumbnail"
+                name="thumbnail"
+                accept="image/*"
+                upload-image-input
+                value = records.thumbnail
+            )
+            img(src=`${records.thumbnail}` upload-image-preview 
+                class="image-preview")
+            button(button-cancel-image class="d-none") X
+        div(class="form-group")
+            lable(for="position") Vị trí
+            input(
+                type="number"
+                class="form-control"
+                id="position"
+                name="position"
+                placeholder ="Tự động tăng"
+                min="1"
+                value = records.position
+            )
+        div(class="form-group form-check form-check-inline")
+            input(
+                type="radio"
+                class="form-check-input"
+                id="statusActive"
+                name="status"
+                value ="active"
+                checked = (records.status == "active" ? true : false)
+            )
+            lable(for="statusActive" class="form-check-lable") Hoạt Động
+        div(class="form-group form-check form-check-inline")
+            input(
+                type="radio"
+                class="form-check-input"
+                id="statusInactive"
+                name="status"
+                value ="inactive"
+                checked = (records.status == "inactive" ? true : false)
+            )
+            lable(for="statusActive" class="form-check-lable") Dừng hoạt Động
+        div(class="form-group")
+            button(type="submit" class="btn btn-primary") Cập nhật 
+
+            a(href="/admin/products-category" class="btn btn-warning") Quay lại
+
+
+    link(rel="stylesheet", href="/css/style.css")
+    script(src="/admin/js/product.js") 
