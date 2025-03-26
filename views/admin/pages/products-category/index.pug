@@ -5,8 +5,7 @@ include ../../mixins/pagination.pug
 include ../../mixins/form-change-multi.pug
 include ../../mixins/alert.pug
 include ../../mixins/sort.pug
-
-
+include ../../mixins/table-tree.pug
 
 block main
     +alert-success("5000")
@@ -22,14 +21,14 @@ block main
             +search(keyword)
     .card.mb-3 
       .card-header Danh sách
-        .card-body 
-          .row
-            .col-8 
-              +form-change-multi(`${prefixAdmin}/products-category/change-multi?_method=PATCH`)
-            .col-4 
-              a(href=`${prefixAdmin}/products-category/create`
-                class="btn btn-outline-success"
-              ) + Thêm mới
+      .card-body 
+        .row
+          .col-8 
+            +form-change-multi(`${prefixAdmin}/products-category/change-multi?_method=PATCH`)
+          .col-4 
+            a(href=`${prefixAdmin}/products-category/create`
+              class="btn btn-outline-success"
+            ) + Thêm mới
 
     .card.mb-3 
       .card-header Sắp xếp 
@@ -37,72 +36,29 @@ block main
         .row 
           .col-4 
             +sort(hidePrice)
-        table(
-          class="table table-hover table-sm"
-          checkbox-multi
-        )
-          thead
-            tr
-              th 
-                input(type="checkbox" name="checkall")
-              th STT
-              th Ảnh
-              th Tiêu đề
-              th Vị trí
-              th Trạng Thái
-              th Hành Động
-          tbody
-            each item, index in records
+        if records.length > 0
+          table(
+            class="table table-hover table-sm"
+            checkbox-multi
+          )
+            thead
               tr
-                td 
-                  input(
-                    type="checkbox"
-                    name="id"
-                    value=item.id 
-                  )
-                td #{index + 1}
-                td: img.img-thumbnail(
-                  src= item.thumbnail 
-                  alt= item.title
-                  width="100px"
-                  height="auto"
-                  )
-                td #{item.title}
-                td 
-                  input(type="number"
-                    value=item.position
-                    style="width: 60px"
-                    min="1"
-                    name="position")
-                td
-                  if (item.status === 'active')
-                    button(class="badge bg-success" 
-                      button-change-status
-                      data-status = item.status
-                      data-id = item.id) Hoạt động
-                  else
-                     button(class="badge bg-danger" 
-                      class="badge bg-danger" 
-                      button-change-status
-                      data-status = item.status
-                      data-id = item.id) Dừng hoạt động
-                td  
-                  a(
-                    href=`${prefixAdmin}/products-category/detail/${item.id}`
-                    class="btn btn-info btn-sm-1"
-                  ) Chi tiết
-                td
-                  a(href=`${prefixAdmin}/products-category/edit/${item.id}` class="btn btn-warning btn-sm-1") Sửa
-                td 
-                  button(
-                    class="btn btn-danger btn-sm ml-1"
-                    button-delete
-                    data-id=item.id
-                    ) Xóa  
-    nav.d-flex.justify-content-end
-      +pagination(pagination)
+                th 
+                  input(type="checkbox" name="checkall")
+                th STT
+                th Ảnh
+                th Tiêu đề
+                th Vị trí
+                th Trạng Thái
+                th Hành Động
+            tbody
+              +table-tree(records)
+        else
+          p.text-center Không có dữ liệu hiển thị.
+
+    //- nav.d-flex.justify-content-end
+    //-   +pagination(pagination)
   
-    
     form(action="",
      method="POST",
      id="form-change-status",
@@ -113,6 +69,5 @@ block main
      id="form-delete-item",
      data-path=`${prefixAdmin}/products-category/delete`) 
 
-
     link(rel="stylesheet", href="/css/style.css")
-    script(src="/admin/js/product.js") 
+    script(src="/admin/js/product.js")

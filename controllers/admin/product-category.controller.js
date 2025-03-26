@@ -7,59 +7,50 @@ const filterStatusHelper = require("../../helpers/filterStatus");
 const searchHelper = require("../../helpers/search");
 
 const paginationHelper = require("../../helpers/pagination");
+
+const createTreeHelper = require("../../helpers/createTree");
 //[GET] /admin/products-category
 
 module.exports.index = async (req, res) => {
-  let find = {
-    deleted: false,
-  };
+  let find = { deleted: false };
 
-  //filterStatus
+  // Lọc theo trạng thái
   const filterStatus = filterStatusHelper(req.query);
+  if (req.query.status) find.status = req.query.status;
 
-  if (req.query.status) {
-    find.status = req.query.status;
-  }
-  //search
+  // Tìm kiếm theo từ khóa
   const objectSearch = searchHelper(req.query);
+  if (objectSearch.regex) find.title = objectSearch.regex;
 
-  if (objectSearch.regex) {
-    find.title = objectSearch.regex;
-  }
-  // Pageination
-
+  // Đếm số bản ghi
   const count = await ProductCategory.countDocuments(find);
 
-  let objectPagination = paginationHelper(
-    {
-      limitItem: 5,
-      currentPage: 1,
-    },
-    req.query,
-    count
-  );
+  // Phân trang
+  // const objectPagination = paginationHelper({ limitItem: 5, currentPage: 1 }, req.query, count);
 
-  //Sort
+  // Sắp xếp
   let sort = {};
-
   if (req.query.sortKey && req.query.sortValue) {
-    sort[req.query.sortKey] =
-      req.query.sortValue.toLowerCase() === "asc" ? 1 : -1;
+    sort[req.query.sortKey] = req.query.sortValue.toLowerCase() === "asc" ? 1 : -1;
   } else {
     sort.position = -1; // Mặc định sắp xếp giảm dần
   }
 
+  // Lấy danh sách danh mục
   const records = await ProductCategory.find(find)
     .sort(sort)
-    .limit(objectPagination.limitItem)
-    .skip(objectPagination.skip);
+    // .limit(objectPagination.limitItem)
+    // .skip(objectPagination.skip);
+
+  // Chuyển đổi danh mục thành cây
+  const newRecords = createTreeHelper.tree(records);
 
   res.render("admin/pages/products-category/index", {
     pageTitle: "Danh mục sản phẩm",
-    records: records,
+    records: newRecords,
     filterStatus: filterStatus,
     keyword: objectSearch.keyword,
-    pagination: objectPagination,
+    // pagination: objectPagination,
   });
 };
 
@@ -70,25 +61,9 @@ module.exports.create = async (req, res) => {
     deleted: false,
   };
 
-  function createTree(arr, parentId = "") {
-    const tree = [];
-  
-    arr.forEach((item) => {
-      if (item.parent_id === parentId) {
-        const newItem = item
-        const children = createTree(arr, item.id);
-        if (children.length > 0) {
-          newItem.children = children;
-        }
-        tree.push(newItem);
-      }
-    });
-    return tree;
-  }
-  
   const records = await ProductCategory.find(find);
 
-  const newRecords = createTree(records);
+  const newRecords = createTreeHelper.tree(records);
 
   res.render("admin/pages/products-category/create", {
     pageTitle: "Thêm mới danh mục sản phẩm",
