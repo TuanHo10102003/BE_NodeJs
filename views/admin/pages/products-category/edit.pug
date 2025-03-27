@@ -1,12 +1,14 @@
 extends ../../layouts/default.pug
 include ../../mixins/alert.pug
+include ../../mixins/select-tree.pug
+
 block main 
     +alert-success(5000)
     +alert-error(5000)
 
     h1(class="mb-4") Cập nhật danh mục
     form(
-        action = `${prefixAdmin}/products-category/edit/${records.id}?_method=PATCH`
+        action = `${prefixAdmin}/products-category/edit/${data.id}?_method=PATCH`
         id="form-edit-product-category"
         method ="POST"
         enctype="multipart/form-data"
@@ -20,17 +22,18 @@ block main
                 id="title"
                 name="title"
                 required
-                value = records.title
+                value = data.title
             )
         div(class="form-group")
             lable(for="parent_id") Danh mục cha
-            input(
-                type="text"
-                class="form-control"
-                id="parent_id"
+            select(
                 name="parent_id"
-                value = records.parent_id
+                id="parent_id"
+                class="form-control"
             )
+                option(value="") -- Chọn danh mục cha --
+                if(records)
+                    +select-tree(records, 1, data.parent_id)
         div(class="form-group")
             label(for="desc") Mô tả
             textarea(
@@ -38,8 +41,8 @@ block main
                 id="desc"
                 name="description"
                 rows="5"
-                value = records.description
-            ) #{records.description}
+                value = data.description
+            ) #{data.description}
         div(class="form-group" upload-image)
             lable(for="thumbnail") Ảnh 
             <br>
@@ -50,9 +53,9 @@ block main
                 name="thumbnail"
                 accept="image/*"
                 upload-image-input
-                value = records.thumbnail
+                value = data.thumbnail
             )
-            img(src=`${records.thumbnail}` upload-image-preview 
+            img(src=`${data.thumbnail}` upload-image-preview 
                 class="image-preview")
             button(button-cancel-image class="d-none") X
         div(class="form-group")
@@ -64,7 +67,7 @@ block main
                 name="position"
                 placeholder ="Tự động tăng"
                 min="1"
-                value = records.position
+                value = data.position
             )
         div(class="form-group form-check form-check-inline")
             input(
@@ -83,7 +86,7 @@ block main
                 id="statusInactive"
                 name="status"
                 value ="inactive"
-                checked = (records.status == "inactive" ? true : false)
+                checked = (data.status == "inactive" ? true : false)
             )
             lable(for="statusActive" class="form-check-lable") Dừng hoạt Động
         div(class="form-group")

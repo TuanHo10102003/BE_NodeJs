@@ -179,11 +179,16 @@ module.exports.edit = async (req, res) => {
       _id: req.params.id,
     };
 
-    const records = await ProductCategory.findOne(find);
+    const data = await ProductCategory.findOne(find);
+
+    const records = await ProductCategory.find({deleted: false});
+
+    const newRecords = createTreeHelper.tree(records);
 
     res.render("admin/pages/products-category/edit", {
-      pageTitle: "Cập nhật sản phẩm",
-      records: records,
+      pageTitle: "Cập nhật danh mục sản phẩm",
+      data: data,
+      records: newRecords,
     });
   } catch (error) {
     res.redirect(`${systemConfig.prefixAdmin}/products-category`);
@@ -216,11 +221,16 @@ module.exports.detail = async (req, res) => {
       _id: req.params.id,
     };
 
-    const records = await ProductCategory.findOne(find);
+    const data = await ProductCategory.findOne(find);
 
+    const records = await ProductCategory.find({deleted: false});
+
+    const newRecords = createTreeHelper.tree(records);
+    
     res.render("admin/pages/products-category/detail", {
-      pageTitle: records.title,
-      records: records,
+      pageTitle: "Chi tiết danh mục sản phẩm",
+      data: data,
+      records: newRecords,
     });
   } catch (error) {
     res.redirect(`${systemConfig.prefixAdmin}/products-category`);

@@ -2,35 +2,35 @@ extends ../../layouts/default.pug
 
 block main 
     
-    if(records.title)
-        h1(class="mb-4") Tiêu đề: #{records.title}
+    if(data.title)
+        h1(class="mb-4") Tiêu đề: #{data.title}
     
-    if(records.thumbnail)
+    if(data.thumbnail)
         div(class="mb-4")
             img(
-                src=records.thumbnail 
+                src=data.thumbnail 
                 style="width: 100x"
             )
 
-    if (records.status)
+    if (data.status)
     div(class="mb-4")
         span Trạng thái: 
-        if (records.status === `active`)
+        if (data.status === `active`)
             span(class="badge bg-success") Hoạt động
-        else if (records.status === `inactive`)
-            span(class="badge bg-danger") Dừng hoạt động
+        else if (data.status === `inactive`)
+            span(class="badge bg-danger") Dừng hoạt 
+            
+    if(records)
+        h1(class="mb-4") Danh mục cha: <b>#{records.title}</b>
 
-    if(records.position)
-        h1(class="mb-4") Danh mục cha: <b>#{records.parent_id}</b>
+    if(data.position)
+        h1(class="mb-4") Vị trí: <b>#{data.position}</b>
 
-    if(records.position)
-        h1(class="mb-4") Vị trí: <b>#{records.position}</b>
-
-    if(records.description)
-        h1(class="mb-4") Mô tả: !{records.description}
+    if(data.description)
+        h1(class="mb-4") Mô tả: !{data.description}
 
     td
-        a(href=`${prefixAdmin}/products-category/edit/${records.id}` class="btn btn-warning btn-sm-1") Chỉnh sửa
+        a(href=`${prefixAdmin}/products-category/edit/${data.id}` class="btn btn-warning btn-sm-1") Chỉnh sửa
         a(href="/admin/products-category" class="btn btn-warning") Quay lại
 
     script(src="/admin/js/product.js") 

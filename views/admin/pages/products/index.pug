@@ -61,7 +61,7 @@ block main
                     name="id"
                     value=item.id 
                   )
-                td #{index + 1}
+                td #{(pagination.limitItem)*(pagination.currentPage - 1) + (index +1)}
                 td: img.img-thumbnail(
                   src= item.thumbnail 
                   alt= item.title
